@@ -1,0 +1,45 @@
+<nav class="navbar">
+  <div class="navbar-left">
+    <h2>Plateforme Stages - PFE - PFA</h2>
+  </div>
+  <div class="nav-links">
+    <a href="#">Accueil</a>
+    <a href="#">Proposer un sujet</a>
+    <a href="#">Offres</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>Bienvenue sur la plateforme</h1>
+
+  <div class="filters">
+    <label for="filtre">Filtrer par :</label>
+    <select [(ngModel)]="selectedProjet" id="filtre">
+      <option value="Tous">Tous</option>
+      <option value="Stage">Stage</option>
+      <option value="PFA">PFA</option>
+      <option value="PFE">PFE</option>
+    </select>
+  </div>
+
+  <div class="cards-container">
+    <div class="card" *ngFor="let projet of getStages()">
+      <h2>{{ projet.titre }}</h2>
+      <p><strong>Description :</strong> {{ projet.description }}</p>
+      <p><strong>Type :</strong> {{ projet.type }}</p>
+      <p><strong>Statut :</strong> {{ projet.statut }}</p>
+      <p><strong>Encadrant ID :</strong> {{ projet.encadrantId }}</p>
+      <p><strong>Date de création :</strong> {{ projet.createdAt | date: 'short' }}</p>
+      <button class="btn-postuler">Postuler</button>
+    </div>
+  </div>
+
+  <div *ngIf="getStages().length === 0">
+    <p>Aucun projet trouvé.</p>
+  </div>
+
+  <div class="proposer-sujet">
+    <h3>Vous avez un sujet à proposer ?</h3>
+    <button class="btn-secondary">Proposer un sujet</button>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+/* Style global pour la navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #4CAF50; /* couleur verte pour un look moderne */
+  color: white;
+}
+
+.navbar-left h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #FFEB3B; /* couleur jaune pour hover */
+}
+
+.navbar-right button {
+  padding: 8px 16px;
+  margin-left: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+}
+
+.btn-login {
+  background-color: #2196F3; /* bleu pour le bouton de connexion */
+  color: white;
+}
+
+.btn-register {
+  background-color: #FF5722; /* rouge-orangé pour le bouton d'inscription */
+  color: white;
+}
+
+.navbar-right button:hover {
+  opacity: 0.8;
+}
+
+/* Classe active pour le lien actif */
+.active {
+  border-bottom: 2px solid #FFEB3B;
+}

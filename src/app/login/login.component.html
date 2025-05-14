@@ -1,0 +1,74 @@
+<section class="background-radial-gradient overflow-hidden">
+  <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+    <div class="row gx-lg-5 align-items-center mb-5">
+      
+      <!-- Colonne gauche avec le texte -->
+      <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+        <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+          La meilleure solution <br />
+          <span style="color: hsl(218, 81%, 75%)">pour votre gestion des stages</span>
+        </h1>
+        <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
+          La plateforme de gestion des stages facilite la gestion efficace du processus de stages pour les étudiants, enseignants et administrateurs.
+        </p>
+      </div>
+
+      <!-- Colonne droite avec le formulaire -->
+      <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+        <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+        <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+
+        <div class="card bg-glass">
+          <div class="card-body px-4 py-5 px-md-5">
+
+            <div class="text-center mb-4">
+              <h3 class="fw-normal pb-2" style="letter-spacing: 1px;">Connexion</h3>
+            </div>
+
+            <form (ngSubmit)="onSubmit()">
+              <!-- Email -->
+              <div class="form-outline mb-4 text-start">
+                <label class="form-label text-muted">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  [(ngModel)]="email"
+                  name="email"
+                  required
+                />
+              </div>
+
+              <!-- Mot de passe -->
+              <div class="form-outline mb-4 text-start">
+                <label class="form-label text-muted">Mot de passe</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  [(ngModel)]="password"
+                  name="password"
+                  required
+                />
+              </div>
+
+              <!-- Message d'erreur -->
+              <div *ngIf="errorMessage" class="text-danger text-sm mb-3">
+                {{ errorMessage }}
+              </div>
+
+              <!-- Bouton -->
+              <button
+                type="submit"
+                class="btn btn-primary btn-block mb-4"
+                [disabled]="isLoading"
+              >
+                Se connecter
+              </button>
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
