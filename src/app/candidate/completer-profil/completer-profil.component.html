@@ -1,0 +1,133 @@
+<div class="background-shapes">
+  <span class="shape shape1"></span>
+  <span class="shape shape2"></span>
+  <span class="shape shape3"></span>
+</div>
+
+<div class="container-fluid min-vh-100" style="background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);">
+  <div class="container py-5">
+    <div class="d-flex justify-content-center">
+      <div class="card p-4 shadow-lg mx-auto" style="width: 90%; max-width: 1000px; background-color: white; border-radius: 15px; border: none;">
+        <h3 class="text-center mb-4" style="color: #2c3e50; font-weight: 600;">Compléter votre profil</h3>
+
+        <!-- Photo de profil améliorée -->
+        <div class="text-center mb-4">
+          <div class="position-relative d-inline-block">
+            <img [src]="avatarPreview || 'assets/default-avatar.png'"
+                 class="rounded-circle border"
+                 style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #e0e0e0;">
+            <label class="btn btn-sm btn-primary position-absolute bottom-0 end-0 rounded-circle shadow-sm"
+                   style="width: 36px; height: 36px; padding: 0; background-color: #3498db; border: 2px solid white;">
+              <i class="bi bi-camera-fill text-white"></i>
+              <input type="file"
+                     class="d-none"
+                     accept="image/*"
+                     (change)="onFileSelected($event)">
+            </label>
+          </div>
+          <div class="mt-2">
+            <small class="text-muted" style="font-size: 0.85rem;">Changer la photo</small>
+          </div>
+        </div>
+
+        <form [formGroup]="profilForm" (ngSubmit)="onSubmit()">
+          <!-- Ligne Nom/Prénom -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label" style="color: #2c3e50; font-weight: 500;">Nom</label>
+              <input type="text" formControlName="nom" class="form-control"
+                     style="border-radius: 8px; padding: 10px 15px; border: 1px solid #e0e0e0;">
+              <div *ngIf="profilForm.get('nom')?.invalid && profilForm.get('nom')?.touched"
+                   class="text-danger mt-1" style="font-size: 0.85rem;">
+                Le nom est requis
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label" style="color: #2c3e50; font-weight: 500;">Prénom</label>
+              <input type="text" formControlName="prenom" class="form-control"
+                     style="border-radius: 8px; padding: 10px 15px; border: 1px solid #e0e0e0;">
+              <div *ngIf="profilForm.get('prenom')?.invalid && profilForm.get('prenom')?.touched"
+                   class="text-danger mt-1" style="font-size: 0.85rem;">
+                Le prénom est requis
+              </div>
+            </div>
+          </div>
+
+          <!-- Ligne Téléphone/Niveau -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label" style="color: #2c3e50; font-weight: 500;">Téléphone</label>
+              <input type="tel" formControlName="telephone" class="form-control"
+                     style="border-radius: 8px; padding: 10px 15px; border: 1px solid #e0e0e0;">
+              <div *ngIf="profilForm.get('telephone')?.invalid && profilForm.get('telephone')?.touched"
+                   class="text-danger mt-1" style="font-size: 0.85rem;">
+                Un numéro valide (10 chiffres) est requis
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label" style="color: #2c3e50; font-weight: 500;">Niveau</label>
+              <input type="text" formControlName="niveau" class="form-control"
+                     style="border-radius: 8px; padding: 10px 15px; border: 1px solid #e0e0e0;">
+              <div *ngIf="profilForm.get('niveau')?.invalid && profilForm.get('niveau')?.touched"
+                   class="text-danger mt-1" style="font-size: 0.85rem;">
+                Le niveau est requis
+              </div>
+            </div>
+          </div>
+
+          <!-- Adresse -->
+          <div class="mb-3">
+            <label class="form-label" style="color: #2c3e50; font-weight: 500;">Adresse</label>
+            <input type="text" formControlName="adresse" class="form-control"
+                   style="border-radius: 8px; padding: 10px 15px; border: 1px solid #e0e0e0;">
+          </div>
+
+          <!-- Expérience professionnelle -->
+          <div class="mb-3">
+            <label class="form-label" style="color: #2c3e50; font-weight: 500;">Expérience professionnelle</label>
+            <textarea formControlName="experience" class="form-control" rows="3"
+                      style="border-radius: 8px; padding: 10px 15px; border: 1px solid #e0e0e0;"></textarea>
+          </div>
+
+          <!-- Compétences techniques -->
+          <div class="mb-3">
+            <label class="form-label" style="color: #2c3e50; font-weight: 500;">Compétences techniques</label>
+            <textarea formControlName="competences" class="form-control" rows="2"
+                      style="border-radius: 8px; padding: 10px 15px; border: 1px solid #e0e0e0;"></textarea>
+          </div>
+
+          <!-- Formation académique -->
+          <div class="mb-3">
+            <label class="form-label" style="color: #2c3e50; font-weight: 500;">Formation académique</label>
+            <input type="text" formControlName="formation" class="form-control"
+                   style="border-radius: 8px; padding: 10px 15px; border: 1px solid #e0e0e0;">
+          </div>
+
+          <!-- Domaine à rechercher -->
+          <div class="mb-4">
+            <label class="form-label" style="color: #2c3e50; font-weight: 500;">Domaine à rechercher</label>
+            <select formControlName="domaineRecherche" class="form-select"
+                    style="border-radius: 8px; padding: 10px 15px; border: 1px solid #e0e0e0;">
+              <option value="">-- Choisir un domaine --</option>
+              <option value="Développement Web">Développement Web</option>
+              <option value="Développement Mobile">Développement Mobile</option>
+              <option value="Data Science">Data Science</option>
+              <option value="Réseaux">Réseaux</option>
+              <option value="Cybersécurité">Cybersécurité</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+
+          <!-- Bouton de soumission -->
+          <button type="submit" class="btn btn-primary w-100 py-3"
+                  style="background-color: #3498db; border: none; border-radius: 8px; font-weight: 500;"
+                  [disabled]="profilForm.invalid">
+            Valider le profil
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
