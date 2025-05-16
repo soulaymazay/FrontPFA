@@ -1,54 +1,60 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AuthService, Profil } from '../../services/auth.service'; // adapte le chemin si besoin
+import { NavbarComponent } from '../../navbar/navbar.component';
+
 @Component({
-  selector: 'app-candidate-profile',
+  selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [NavbarComponent],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  userInfo = {
-    name: 'Ahmed Ben Salah',
-    email: 'ahmed.bensalah@example.com',
-    phone: '+21612345678',
-    birthDate: '1998-06-20',
-    photoUrl: 'assets/default-profile.jpeg',
-    status: 'Disponible',
-    title: 'Développeur Full Stack',
-    currentCompany: ''
+
+  profile = {
+    fullName: '',
+    phone: '',
+    email: '',
+    address: '',
+    title: '',
+    experience: '',
+    skills: '',
+    education: '',
+    fieldOfInterest: ''
   };
 
-  profileCompletion = {
-    percentage: 75,
-    missingItems: [
-      'Expérience professionnelle',
-      'Compétences techniques',
-      'Formation académique'
-    ]
-  };
+  profilId: string = '';
 
-  sections = [
-    { title: 'Candidatures', icon: '📄', count: 5 },
-    { title: 'Opportunités', icon: '🔍', count: 3 },
-    { title: 'Mon espace', icon: '👤' }
-  ];
-
-  emailConfirmed = false;
-  showStatusInfo = false;
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    // Simulation de chargement des données
-    setTimeout(() => {
-      this.emailConfirmed = true;
-    }, 1500);
+    this.profilId = localStorage.getItem('userId') || ''; // récupérer l'ID stocké
+    if (this.profilId) {
+      this.loadProfile();
+    } else {
+      console.error('ID utilisateur non trouvé dans localStorage');
+      // Ici tu peux rediriger ou afficher un message d'erreur si besoin
+    }
   }
 
-  toggleStatusInfo() {
-    this.showStatusInfo = !this.showStatusInfo;
-  }
-
-  updateStatus(newStatus: string) {
-    this.userInfo.status = newStatus;
+  loadProfile(): void {
+    this.authService.getProfilById(this.profilId).subscribe({
+      next: (data: Profil) => {
+        this.profile = {
+          fullName: `${data.prenom || ''} ${data.nom || ''}`.trim(),
+          phone: data.telephone || '',
+          email: data.email || '',
+          address: data.adresse || '',
+          title: data.niveau || '',
+          experience: data.experience || '',
+          skills: data.competences || '',
+          education: data.formation || '',
+          fieldOfInterest: data.domaine || ''  // Ici c'est domaineRecherche si c'est ton nom côté backend
+        };
+      },
+      error: err => {
+        console.error('Erreur récupération profil', err);
+      }
+    });
   }
 }

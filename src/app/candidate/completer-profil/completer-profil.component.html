@@ -53,6 +53,16 @@
               </div>
             </div>
           </div>
+          <div class="mb-3">
+  <label class="form-label" style="color: #2c3e50; font-weight: 500;">Email</label>
+  <input type="email" formControlName="email" class="form-control"
+         style="border-radius: 8px; padding: 10px 15px; border: 1px solid #e0e0e0;">
+  <div *ngIf="profilForm.get('email')?.invalid && profilForm.get('email')?.touched"
+       class="text-danger mt-1" style="font-size: 0.85rem;">
+    Un email valide est requis
+  </div>
+</div>
+
 
           <!-- Ligne Téléphone/Niveau -->
           <div class="row">

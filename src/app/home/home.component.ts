@@ -1,64 +1,54 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ProjectService } from '../services/project.service';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router'; // Import déjà présent
-import { RouterModule } from '@angular/router'; // Ajoutez ceci
+import { RouterModule, Router } from '@angular/router';
+import { ProjectService } from '../services/project.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    HttpClientModule,
-    ReactiveFormsModule,
     CommonModule,
+    ReactiveFormsModule,
     FormsModule,
-    RouterModule // Ajoutez ce module
+    RouterModule
   ],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  providers: [] // Pas besoin ici de ProjectService si providedIn: 'root'
 })
 export class HomeComponent implements OnInit {
   stages: any[] = [];
-  selectedProjet: string = 'Tous';
-  showUpdateForm: boolean = false;
+  selectedProjet = 'Tous';
   form!: FormGroup;
-  submitted: boolean = false;
 
-  // Ajoutez Router dans le constructeur
   constructor(
     private fb: FormBuilder,
     private projectService: ProjectService,
-    private router: Router // Injection du Router
+    private router: Router
   ) {}
 
-  goToSignup() {
-    this.router.navigate(['/signup']); // Maintenant cela fonctionnera
-  }
-
-  ngOnInit(): void {
-    this.loadStages();
+  ngOnInit() {
     this.form = this.fb.group({
       departmentName: ['', Validators.required]
     });
+    this.loadStages();
   }
 
-  loadStages(): void {
+  loadStages() {
     this.projectService.getStages().subscribe({
-      next: (data) => {
-        console.log(data);
-        this.stages = data;
-      },
-      error: (err) => console.error('Erreur lors du chargement des projets', err)
+      next: (data) => this.stages = data,
+      error: (err) => console.error(err)
     });
   }
 
+  goToSignup() {
+    this.router.navigate(['/signup']);
+  }
+
   getStages() {
-    if (this.selectedProjet === 'Tous') {
-      return this.stages;
-    }
-    return this.stages.filter(p => p.type === this.selectedProjet);
+    if (this.selectedProjet === 'Tous') return this.stages;
+    return this.stages.filter(s => s.type === this.selectedProjet);
   }
 }

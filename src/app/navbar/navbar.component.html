@@ -1,14 +1,40 @@
+<!-- NAVBAR -->
 <nav class="navbar">
+  <!-- Logo à gauche -->
   <div class="navbar-left">
-    <h2>Plateforme Stages - PFE - PFA</h2>
+    <a routerLink="/" class="logo-container" aria-label="Accueil">
+      <img src="assets/logo1.png" alt="Logo Plateforme Stages" class="logo-img" />
+      <span class="logo-text">Plateforme Stages</span>
+    </a>
   </div>
-  <div class="nav-links">
-    <a routerLink="/" routerLinkActive="active">Accueil</a>
-    <a routerLink="/proposer-sujet" routerLinkActive="active">Proposer un sujet</a>
-    <a routerLink="/offres" routerLinkActive="active">Offres</a>
-  </div>
+
+  <!-- Liens de navigation au centre -->
+  <ul class="nav-links" role="menubar">
+    <li role="none"><a routerLink="/" routerLinkActive="active" role="menuitem">Accueil</a></li>
+    <li role="none"><a routerLink="/proposer-sujet" routerLinkActive="active" role="menuitem">Proposer un sujet</a></li>
+    <li role="none"><a routerLink="/offres" routerLinkActive="active" role="menuitem">Offres</a></li>
+    <li role="none"><a routerLink="/contact" routerLinkActive="active" role="menuitem">Contact</a></li>
+  </ul>
+
+  <!-- Section utilisateur à droite -->
   <div class="navbar-right">
-    <button routerLink="/login" class="btn-login">Connexion</button>
-    <button routerLink="/register" class="btn-register">Inscription</button>
+    <img src="assets/user.jpg" alt="Avatar utilisateur" class="avatar-img" />
+
+    <div class="account-dropdown">
+      <button class="account-btn" aria-haspopup="true" aria-expanded="false">
+        Mon compte <span aria-hidden="true">▾</span>
+      </button>
+      <div class="dropdown-menu" role="menu" aria-label="Menu du compte">
+        <a routerLink="/profil" role="menuitem">
+          <i class="fas fa-user"></i> Profil
+        </a>
+        <a routerLink="/notifications" role="menuitem">
+          <i class="fas fa-bell"></i> Notifications
+        </a>
+        <a routerLink="/logout" role="menuitem">
+          <i class="fas fa-sign-out-alt"></i> Déconnexion
+        </a>
+      </div>
+    </div>
   </div>
 </nav>

@@ -8,7 +8,10 @@ import { NgModule } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
 
+
 import { CandidateService } from './core/services/candidate.service';
+import { CompleterProfilComponent } from './candidate/completer-profil/completer-profil.component';
+
 
 // Déclare les routes en premier
 export const routes: Routes = [
@@ -16,7 +19,9 @@ export const routes: Routes = [
   {path: 'liste', component: HomeComponent},
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'profile', component: ProfileComponent } // Corrigé ici
+  { path: 'profile', component: ProfileComponent } ,
+  { path: 'completer-profil', component: CompleterProfilComponent }
+// Corrigé ici
 ];
 
 @NgModule({

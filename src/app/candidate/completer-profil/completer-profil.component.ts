@@ -1,79 +1,48 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router'; // ✅ IMPORT CORRECT
 import { CommonModule } from '@angular/common';
+import { NavbarComponent } from '../../navbar/navbar.component';
 
 @Component({
-  selector: 'app-completer-profil',
+  selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [NavbarComponent, ReactiveFormsModule, HttpClientModule, CommonModule],
   templateUrl: './completer-profil.component.html',
   styleUrls: ['./completer-profil.component.css']
 })
-export class CompleterProfilComponent implements OnInit {
-  profilForm!: FormGroup;
-  email: string = '';
-  avatarPreview: string | ArrayBuffer | null = '/assets/avatar.png';
-  selectedFile: File | null = null;
+export class CompleterProfilComponent {
+  profilForm: FormGroup;
+  avatarPreview: string | ArrayBuffer | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute
-  ) {}
-
-  ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.email = params['email'] || '';
-    });
-
+    private http: HttpClient,
+    private router: Router // ✅ injection correcte
+  ) {
     this.profilForm = this.fb.group({
       nom: ['', Validators.required],
       prenom: ['', Validators.required],
-      telephone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      telephone: ['', [Validators.required, Validators.pattern(/^\+?\d{8,15}$/)]],
       niveau: ['', Validators.required],
       adresse: [''],
       experience: [''],
       competences: [''],
       formation: [''],
-      domaineRecherche: ['']
+      domaineRecherche: [''],
+      email: ['', [Validators.required, Validators.email]],
+      image: ['']
     });
-
-    this.loadDefaultAvatar();
   }
 
-  loadDefaultAvatar() {
-    const img = new Image();
-    img.src = '/assets/avatar.png';
-    img.onerror = () => {
-      console.warn("L'avatar par défaut n'a pas pu être chargé");
-      this.avatarPreview = '/assets/default-avatar.png';
-    };
-  }
-
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-
-      // Vérification du type de fichier
-      if (!file.type.match('image.*')) {
-        alert('Seules les images sont acceptées');
-        return;
-      }
-
-      // Vérification de la taille (max 2MB)
-      if (file.size > 2097152) {
-        alert('La taille maximale est de 2MB');
-        return;
-      }
-
-      this.selectedFile = file;
-
-      // Aperçu de l'image
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
       const reader = new FileReader();
       reader.onload = () => {
         this.avatarPreview = reader.result;
+        this.profilForm.patchValue({ image: reader.result });
       };
       reader.readAsDataURL(file);
     }
@@ -81,28 +50,23 @@ export class CompleterProfilComponent implements OnInit {
 
   onSubmit() {
     if (this.profilForm.valid) {
-      const formData = new FormData();
+      const formData = this.profilForm.value;
+      this.http.post('http://localhost:3001/api/completer-profil', formData).subscribe({
+        next: res => {
+          alert('Profil enregistré avec succès');
+          console.log('Réponse serveur:', res);
 
-      if (this.selectedFile) {
-        formData.append('avatar', this.selectedFile);
-      }
-
-      formData.append('email', this.email);
-      formData.append('profileData', JSON.stringify(this.profilForm.value));
-
-      console.log('Données du formulaire:', formData);
-      // Envoi au backend...
+          // ✅ Redirection vers la page de profil
+          this.router.navigate(['/profile']);
+        },
+        error: err => {
+          console.error('Erreur lors de la sauvegarde du profil', err);
+          alert('Erreur lors de la sauvegarde du profil.');
+        }
+      });
     } else {
-      this.markFormGroupTouched(this.profilForm);
+      alert('Veuillez remplir tous les champs obligatoires correctement.');
+      this.profilForm.markAllAsTouched();
     }
-  }
-
-  private markFormGroupTouched(formGroup: FormGroup) {
-    Object.values(formGroup.controls).forEach(control => {
-      control.markAsTouched();
-      if (control instanceof FormGroup) {
-        this.markFormGroupTouched(control);
-      }
-    });
   }
 }
