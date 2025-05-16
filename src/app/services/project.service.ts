@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common'; // ❌ NE DOIT PAS être dans un
   providedIn: 'root'
 })
 export class ProjectService {
-  private apiUrl = `${environment.apiUrl}/${environment.prefix}/projets/encadrant/681262561a8368b2968b7e04/valides`;
+  private apiUrl = `${environment.apiUrl}/${environment.prefix}/projets/encadrant/valides`;
 
   constructor(private http: HttpClient) {}
 

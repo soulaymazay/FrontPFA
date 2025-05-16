@@ -2,72 +2,64 @@
   <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
     <div class="row gx-lg-5 align-items-center mb-5">
 
-      <!-- Colonne gauche avec le texte -->
+      <!-- Colonne gauche -->
       <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
         <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
           Rejoignez notre plateforme <br />
           <span style="color: hsl(218, 81%, 75%)">de gestion des stages</span>
         </h1>
         <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
-          Créez votre compte en tant qu'encadrant, candidat ou entreprise pour accéder à toutes les fonctionnalités de notre plateforme.
+          Créez votre compte en tant qu'encadrant ou candidat pour accéder à toutes les fonctionnalités de notre plateforme.
         </p>
       </div>
 
-      <!-- Colonne droite avec le formulaire -->
+      <!-- Colonne droite -->
       <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
         <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
         <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
 
         <div class="card bg-glass">
           <div class="card-body px-4 py-5 px-md-5">
-
             <div class="text-center mb-4">
               <h3 class="fw-normal pb-2" style="letter-spacing: 1px;">Inscription</h3>
             </div>
 
-            <form [formGroup]="signupForm" (ngSubmit)="submit()">
-              <!-- Nom d'utilisateur -->
+            <form (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
+
+              <!-- Nom -->
               <div class="form-outline mb-4 text-start">
-                <label class="form-label text-muted">Nom d'utilisateur</label>
-                <input
-                  formControlName="username"
-                  type="text"
-                  class="form-control"
-                  required
-                />
+                <label class="form-label text-muted" for="nom">Nom</label>
+                <input id="nom" type="text" class="form-control" name="nom" [(ngModel)]="user.nom" required #nom="ngModel" />
+                <div *ngIf="nom.invalid && nom.touched" class="text-danger small mt-1">
+                  Le nom est obligatoire.
+                </div>
               </div>
 
               <!-- Email -->
               <div class="form-outline mb-4 text-start">
-                <label class="form-label text-muted">Email</label>
-                <input
-                  formControlName="email"
-                  type="email"
-                  class="form-control"
-                  required
-                />
+                <label class="form-label text-muted" for="email">Email</label>
+                <input id="email" type="email" class="form-control" name="email" [(ngModel)]="user.email" required email #email="ngModel" />
+                <div *ngIf="email.invalid && email.touched" class="text-danger small mt-1">
+                  Veuillez saisir un email valide.
+                </div>
               </div>
 
               <!-- Mot de passe -->
               <div class="form-outline mb-4 text-start">
-                <label class="form-label text-muted">Mot de passe</label>
-                <input
-                  formControlName="password"
-                  type="password"
-                  class="form-control"
-                  required
-                />
+                <label class="form-label text-muted" for="password">Mot de passe</label>
+                <input id="password" type="password" class="form-control" name="password" [(ngModel)]="user.password" required minlength="6" #password="ngModel" />
+                <div *ngIf="password.invalid && password.touched" class="text-danger small mt-1">
+                  Le mot de passe doit contenir au moins 6 caractères.
+                </div>
               </div>
 
-              <!-- Confirmer le mot de passe -->
+              <!-- Confirmation du mot de passe -->
               <div class="form-outline mb-4 text-start">
-                <label class="form-label text-muted">Confirmer le mot de passe</label>
-                <input
-                  formControlName="confirmPassword"
-                  type="password"
-                  class="form-control"
-                  required
-                />
+                <label class="form-label text-muted" for="confirmPassword">Confirmer le mot de passe</label>
+                <input id="confirmPassword" type="password" class="form-control" name="confirmPassword" [(ngModel)]="user.confirmPassword" required #confirmPassword="ngModel" />
+                <div *ngIf="confirmPassword.invalid && confirmPassword.touched" class="text-danger small mt-1">
+                  Veuillez confirmer le mot de passe.
+                </div>
               </div>
 
               <!-- Rôle -->
@@ -75,49 +67,23 @@
                 <label class="form-label text-muted">Rôle</label>
                 <div class="mt-2">
                   <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      id="role-encadrant"
-                      formControlName="role"
-                      value="encadrant"
-                    />
+                    <input class="form-check-input" type="radio" id="role-encadrant" name="role" [(ngModel)]="user.role" value="encadrant" required />
                     <label class="form-check-label" for="role-encadrant">Encadrant</label>
                   </div>
                   <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      id="role-candidat"
-                      formControlName="role"
-                      value="candidat"
-                    />
+                    <input class="form-check-input" type="radio" id="role-candidat" name="role" [(ngModel)]="user.role" value="candidat" required />
                     <label class="form-check-label" for="role-candidat">Candidat</label>
-                  </div>
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      id="role-entreprise"
-                      formControlName="role"
-                      value="entreprise"
-                    />
-                    <label class="form-check-label" for="role-entreprise">Entreprise</label>
                   </div>
                 </div>
               </div>
 
-              <!-- Message d'erreur -->
+              <!-- Message d'erreur serveur -->
               <div *ngIf="errorMessage" class="text-danger text-sm mb-3">
                 {{ errorMessage }}
               </div>
 
-              <!-- Bouton de soumission -->
-              <button
-                type="submit"
-                class="btn btn-primary btn-block mb-4"
-                [disabled]="isLoading"
-              >
+              <!-- Bouton -->
+              <button type="submit" class="btn btn-primary btn-block mb-4" [disabled]="isLoading || !f.form.valid">
                 S'inscrire
               </button>
             </form>
@@ -125,7 +91,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
