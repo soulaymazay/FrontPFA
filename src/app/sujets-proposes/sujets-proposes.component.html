@@ -1,0 +1,52 @@
+<app-navbar></app-navbar>
+
+<div class="dashboard-sidebar">
+  <div class="profile-photo-container">
+    <div class="profile-photo">
+      <img src="assets/user.jpg" alt="Photo de profil" />
+    </div>
+    <button class="edit-photo-btn">
+      <i class="fas fa-camera"></i> Modifier la photo
+    </button>
+  </div>
+
+  <div class="dashboard-menu">
+    <button class="menu-item active"><i class="fas fa-user"></i>&nbsp; Mon Profil</button>
+    <button class="menu-item"><i class="fas fa-list"></i>&nbsp; Liste des projets postulés</button>
+    <button class="menu-item"><i class="fas fa-list"></i>&nbsp; Liste des projets proposés</button>
+  </div>
+</div>
+
+<div class="contenu-principal">
+  <h2 class="titre-principal">✨ Liste des sujets proposés ✨</h2>
+
+  <div *ngIf="sujets && sujets.length > 0; else noSujets" class="sujets-wrapper">
+    <div *ngFor="let sujet of sujets" class="sujet-carte">
+      <h3 class="sujet-titre">{{ sujet.titre }}</h3>
+      <span class="sujet-type">{{ sujet.type }}</span>
+      <p class="sujet-description">{{ sujet.description }}</p>
+      <button class="btn-postuler" (click)="postuler(sujet)">💼 Postuler</button>
+    </div>
+  </div>
+
+  <ng-template #noSujets>
+    <p class="no-sujets">Aucun sujet disponible pour le moment.</p>
+  </ng-template>
+</div>
+
+<!-- Modal -->
+<div class="modal" *ngIf="showModal">
+  <div class="modal-content">
+    <span class="close" (click)="fermerModal()">&times;</span>
+    <h2>Postuler pour : {{ sujetSelectionne?.titre }}</h2>
+    <form (ngSubmit)="envoyerCandidature()" #form="ngForm">
+      <input type="text" placeholder="Nom" name="nom" [(ngModel)]="candidature.nom" required>
+      <input type="text" placeholder="Prénom" name="prenom" [(ngModel)]="candidature.prenom" required>
+      <input type="email" placeholder="Email" name="email" [(ngModel)]="candidature.email" required>
+      <input type="tel" placeholder="Téléphone" name="telephone" [(ngModel)]="candidature.telephone" required>
+      <input type="text" placeholder="Domaine" name="domaine" [(ngModel)]="candidature.domaine" required>
+      <input type="file" accept=".pdf" (change)="onFileSelected($event)" required>
+      <button type="submit" class="btn-envoyer">📤 Envoyer</button>
+    </form>
+  </div>
+</div>
