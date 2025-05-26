@@ -20,27 +20,44 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  onSubmit() {
-    this.errorMessage = '';
-    this.isLoading = true;
+ // login.component.ts
+onSubmit() {
+  this.errorMessage = '';
+  this.isLoading = true;
 
-    if (!this.email || !this.password) {
-      this.errorMessage = 'Veuillez remplir tous les champs.';
-      this.isLoading = false;
-      return;
+this.authService.login(this.email, this.password).subscribe({
+  next: (res) => {
+    if (!res.user?._id) {
+      throw new Error('Réponse serveur invalide');
+    }
+    localStorage.setItem('userId', res.user._id);
+    if (res.token) {
+      localStorage.setItem('token', res.token);
     }
 
-    this.authService.login(this.email, this.password).subscribe({
-      next: (res) => {
-        console.log('Connexion réussie', res);
-        this.router.navigate(['/profile']);
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.errorMessage = err.error?.message || 'Email ou mot de passe incorrect.';
-        this.isLoading = false;
-      }
-    });
-
+    // Affiche l'id reçu avant d'appeler getProfilById
+    console.log('userId reçu:', res.user._id);
+this.authService.getProfilById(res.user._id).subscribe({
+  next: (profile) => {
+    console.log('Profil reçu:', profile);
+    localStorage.setItem('profile', JSON.stringify(profile));
+    this.isLoading = false;
+    this.router.navigate(['/profile']);
+  },
+  error: (err) => {
+    console.error('Erreur chargement profil:', err);
+    this.errorMessage = 'Profil introuvable';
+    this.isLoading = false;
   }
+});
+
+
+  },
+  error: (err) => {
+    console.error('Erreur login:', err);
+    this.errorMessage = err.error?.message || 'Erreur de connexion';
+    this.isLoading = false;
+  }
+});
+}
 }

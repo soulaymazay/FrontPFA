@@ -1,0 +1,302 @@
+/* Importation de la police */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8f9fc;
+  color: #333;
+}
+
+/* NAVBAR DESIGN */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #025afd;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+  color: #025afd;
+}
+
+.navbar-left,
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-right {
+  gap: 1rem;
+}
+
+/* Account dropdown */
+.account-dropdown {
+  position: relative;
+}
+
+.account-btn {
+  background: none;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  color: #025afd;
+  font-size: 1rem;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 110%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 100;
+  min-width: 150px;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: #333;
+  transition: background 0.3s;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f0f0f0;
+}
+
+.account-dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* Avatar */
+.avatar-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #025afd;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.logo-img {
+  width: 80px;
+  height: 80px;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(to right, #acc4dbcc, #495469cc), url('../../assets/cc.jpg') center/cover no-repeat;
+  color: white;
+  padding: 10rem 2rem;
+  text-align: center;
+  position: relative;
+  animation: fadeIn 1.5s ease-in;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  animation: fadeInUp 1s ease forwards;
+}
+
+.hero-content p {
+  font-size: 1.4rem;
+  margin-bottom: 2rem;
+  animation: fadeInUp 1.2s ease forwards;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  animation: fadeInUp 1.5s ease forwards;
+}
+/* Style pour le bouton "Accéder" */
+.hero-buttons .btn-primary {
+  background-color: #025afd;  /* Couleur de fond du bouton */
+  color: white;               /* Texte du bouton */
+  padding: 10px 20px;         /* Espacement interne */
+  font-size: 16px;            /* Taille de la police */
+  border: none;               /* Retirer la bordure */
+  border-radius: 30px;        /* Bords arrondis */
+  cursor: pointer;            /* Changer le curseur en main */
+  transition: all 0.3s ease;  /* Transition pour les effets */
+}
+
+/* Effet au survol du bouton */
+.hero-buttons .btn-primary:hover {
+  background-color: #023e9e;  /* Changer la couleur de fond au survol */
+  transform: scale(1.05);      /* Agrandir légèrement le bouton */
+}
+
+/* Effet au focus */
+.hero-buttons .btn-primary:focus {
+  outline: none;              /* Retirer le contour par défaut */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Ajouter une ombre au focus */
+}
+
+
+/* Features Section */
+.features-section {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 4rem 2rem;
+  background-color: #fff;
+}
+
+.feature-card {
+  background-color: #f0f9ff;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  width: 280px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeInUp 1s ease forwards;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.feature-card h3 {
+  color: #025afd;
+  margin-bottom: 1rem;
+}
+
+.feature-card p {
+  color: #555;
+}
+
+/* Footer */
+.footer {
+  background-color: #003366;
+  color: white;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  margin-top: 2rem;
+}
+a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #007bff;
+}
+
+a i {
+  font-size: 1rem;
+}
+
+
+/* Animations */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  .features-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+
+
+
+
+}

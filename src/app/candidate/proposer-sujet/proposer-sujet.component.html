@@ -1,0 +1,146 @@
+<app-navbar></app-navbar>
+
+<div class="profile-page">
+  <!-- Sidebar -->
+  <div class="dashboard-sidebar">
+    <div class="profile-photo-container">
+      <div class="profile-photo">
+        <img src="assets/user.jpg" alt="Photo de profil" />
+      </div>
+      <button class="edit-photo-btn">
+        <i class="fas fa-camera"></i> Modifier la photo
+      </button>
+    </div>
+
+    <div class="dashboard-menu">
+      <button class="menu-item active">
+        <i class="fas fa-user"></i>&nbsp; Mon Profil
+      </button>
+      <button class="menu-item">
+        <i class="fas fa-list"></i>&nbsp; Liste des projets postulés
+      </button>
+      <button class="menu-item">
+        <i class="fas fa-list"></i>&nbsp; Liste des projets proposés
+      </button>
+    </div>
+  </div>
+
+  <div class="container">
+    <form
+      [formGroup]="sujetForm"
+      (ngSubmit)="onSubmit()"
+      enctype="multipart/form-data"
+      class="form-container"
+      @fadeIn
+    >
+      <h2 class="form-title">Proposer un nouveau sujet</h2>
+
+      <div class="form-group" [class.invalid]="f['titre'].invalid && f['titre'].touched">
+        <label for="titre">Titre du sujet :</label>
+        <input
+          id="titre"
+          type="text"
+          formControlName="titre"
+          [class.error-input]="f['titre'].invalid && f['titre'].touched"
+        />
+        <div *ngIf="f['titre'].touched && f['titre'].invalid" class="error-message" @slideIn>
+          Le titre est obligatoire.
+        </div>
+      </div>
+
+      <div
+        class="form-group"
+        [class.invalid]="f['description'].invalid && f['description'].touched"
+      >
+        <label for="description">Description :</label>
+        <textarea
+          id="description"
+          rows="4"
+          formControlName="description"
+          [class.error-input]="f['description'].invalid && f['description'].touched"
+        ></textarea>
+        <div *ngIf="f['description'].touched && f['description'].invalid" class="error-message" @slideIn>
+          La description est obligatoire.
+        </div>
+      </div>
+
+      <div
+        class="form-group"
+        [class.invalid]="f['technologie'].invalid && f['technologie'].touched"
+      >
+        <label for="technologie">Technologie utilisée :</label>
+        <input
+          id="technologie"
+          type="text"
+          formControlName="technologie"
+          [class.error-input]="f['technologie'].invalid && f['technologie'].touched"
+        />
+        <div *ngIf="f['technologie'].touched && f['technologie'].invalid" class="error-message" @slideIn>
+          La technologie est obligatoire.
+        </div>
+      </div>
+
+      <div
+        class="form-group"
+        [class.invalid]="f['entreprise'].invalid && f['entreprise'].touched"
+      >
+        <label for="entreprise">Nom Entreprise :</label>
+        <input
+          id="entreprise"
+          type="text"
+          formControlName="entreprise"
+          [class.error-input]="f['entreprise'].invalid && f['entreprise'].touched"
+        />
+        <div *ngIf="f['entreprise'].touched && f['entreprise'].invalid" class="error-message" @slideIn>
+          L'entreprise est obligatoire.
+        </div>
+      </div>
+
+      <div
+        class="form-group"
+        [class.invalid]="f['emailEntreprise'].invalid && f['emailEntreprise'].touched"
+      >
+        <label for="emailEntreprise">Email de l'entreprise :</label>
+        <input
+          id="emailEntreprise"
+          type="email"
+          formControlName="emailEntreprise"
+          [class.error-input]="f['emailEntreprise'].invalid && f['emailEntreprise'].touched"
+        />
+        <div *ngIf="f['emailEntreprise'].touched && f['emailEntreprise'].invalid" class="error-message" @slideIn>
+          <div *ngIf="f['emailEntreprise'].errors?.['required']">L'email est obligatoire.</div>
+          <div *ngIf="f['emailEntreprise'].errors?.['email']">Format d'email invalide.</div>
+        </div>
+      </div>
+
+      <div class="form-group" [class.invalid]="f['cv'].invalid && f['cv'].touched">
+        <label for="cv">Déposer votre CV :</label>
+        <input
+          id="cv"
+          type="file"
+          (change)="onFileChange($event)"
+          [class.error-input]="f['cv'].invalid && f['cv'].touched"
+        />
+        <div *ngIf="f['cv'].touched && f['cv'].invalid" class="error-message" @slideIn>
+          Le CV est obligatoire.
+        </div>
+      </div>
+
+      <div
+        class="form-group"
+        [class.invalid]="f['encadrantId'].invalid && f['encadrantId'].touched"
+      >
+        <label for="encadrant">Encadrant :</label>
+        <select id="encadrant" formControlName="encadrantId">
+          <option value="">-- Sélectionner un encadrant --</option>
+          <option *ngFor="let enc of encadrants" [value]="enc._id">{{ enc.nom }}</option>
+        </select>
+        <div *ngIf="f['encadrantId'].touched && f['encadrantId'].invalid" class="error-message" @slideIn>
+          Vous devez choisir un encadrant.
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="sujetForm.invalid">Proposer</button>
+    </form>
+  </div>
+</div>

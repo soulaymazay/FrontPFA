@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Router } from '@angular/router'; // ✅ IMPORT CORRECT
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../navbar/navbar.component';
 
@@ -19,7 +19,7 @@ export class CompleterProfilComponent {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router // ✅ injection correcte
+    private router: Router
   ) {
     this.profilForm = this.fb.group({
       nom: ['', Validators.required],
@@ -30,7 +30,7 @@ export class CompleterProfilComponent {
       experience: [''],
       competences: [''],
       formation: [''],
-      domaineRecherche: [''],
+      domaine: [''],
       email: ['', [Validators.required, Validators.email]],
       image: ['']
     });
@@ -42,31 +42,43 @@ export class CompleterProfilComponent {
       const reader = new FileReader();
       reader.onload = () => {
         this.avatarPreview = reader.result;
-        this.profilForm.patchValue({ image: reader.result });
+        this.profilForm.patchValue({ image: reader.result }); // base64
       };
       reader.readAsDataURL(file);
     }
   }
 
   onSubmit() {
-    if (this.profilForm.valid) {
-      const formData = this.profilForm.value;
-      this.http.post('http://localhost:3001/api/completer-profil', formData).subscribe({
-        next: res => {
-          alert('Profil enregistré avec succès');
-          console.log('Réponse serveur:', res);
-
-          // ✅ Redirection vers la page de profil
-          this.router.navigate(['/profile']);
-        },
-        error: err => {
-          console.error('Erreur lors de la sauvegarde du profil', err);
-          alert('Erreur lors de la sauvegarde du profil.');
-        }
-      });
-    } else {
-      alert('Veuillez remplir tous les champs obligatoires correctement.');
+    if (this.profilForm.invalid) {
+      alert('❌ Veuillez remplir tous les champs obligatoires correctement.');
       this.profilForm.markAllAsTouched();
+      return;
     }
+
+    const formData = this.profilForm.value;
+    const userId = localStorage.getItem('userId');
+
+    if (!userId) {
+      alert("⚠️ Utilisateur non identifié. Veuillez vous reconnecter.");
+      return;
+    }
+
+    console.log("🟢 userId:", userId);
+    console.log("📦 Données envoyées:", formData);
+
+    this.http.post(`http://localhost:3001/api/completer-profil/${userId}`, formData).subscribe({
+      next: res => {
+        alert('✅ Profil enregistré avec succès.');
+        this.router.navigate(['/profile']);
+      },
+      error: err => {
+        console.error('🛑 Erreur complète:', err);
+        if (err.status === 400 && err.error?.message) {
+          alert(`Erreur : ${err.error.message}`);
+        } else {
+          alert('❌ Erreur lors de la sauvegarde du profil.');
+        }
+      }
+    });
   }
 }
